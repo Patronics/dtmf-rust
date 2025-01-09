@@ -44,7 +44,12 @@ fn main() {
 	let sink2 = Sink::try_new(&stream_handle).unwrap();
 	sink1.stop();
 	sink2.stop();
-
+	
+	if args.len() == 1 {
+		eprintln!("usage: {} \"DTMFC0DE1234\"", args[0]);
+		return;
+	}
+	
 	gen_sequence(args[1].to_string(), &sink1, &sink2);
 	// The sound plays in a separate thread. This call will block the current thread until the sink
 	// has finished playing all its queued sounds.
