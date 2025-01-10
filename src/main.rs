@@ -42,8 +42,8 @@ fn main() {
 	let (_stream, stream_handle) = OutputStream::try_default().unwrap();
 	let sink1 = Sink::try_new(&stream_handle).unwrap();
 	let sink2 = Sink::try_new(&stream_handle).unwrap();
-	sink1.stop();
-	sink2.stop();
+	sink1.pause();
+	sink2.pause();
 	
 	if args.len() == 1 {
 		eprintln!("usage: {} \"DTMFC0DE1234\"", args[0]);
@@ -62,10 +62,8 @@ fn gen_sequence(mut seq: String, sink1: &Sink, sink2: &Sink) {
 	seq.make_ascii_uppercase();
 	for c in seq.chars(){
 		if TONE_GRID.contains_key(&c){
-			sink1.append(new_tone(LOW_TONES[*TONE_GRID.get(&c).expect("expected").get(0).expect("expected") as usize]));
-			sink2.append(new_tone(HIGH_TONES[*TONE_GRID.get(&c).expect("expected").get(1).expect("expected") as usize]));
-			//sink1.append(new_silence());
-			//sink2.append(new_silence());
+			sink1.append(new_tone(LOW_TONES[*TONE_GRID.get(&c).unwrap().get(0).unwrap() as usize]));
+			sink2.append(new_tone(HIGH_TONES[*TONE_GRID.get(&c).unwrap().get(1).unwrap() as usize]));
 				//sink1.play();
 				//sink2.play();
 				//sink2.sleep_until_end();
